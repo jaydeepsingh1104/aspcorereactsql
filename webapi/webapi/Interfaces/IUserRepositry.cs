@@ -4,7 +4,7 @@ using WebAPICore.Model;
 
 namespace WebAPICore.Interfaces
 {
-    public interface IUserRepositry : IGenericRepository<User>
+    public interface IUserRepositry 
     {
         Task<LoginResDto> login(string userName, string password);
         void Register(RegistrationDto LoginReqDto);
@@ -13,9 +13,9 @@ namespace WebAPICore.Interfaces
         Task<User> FindUser(string userName);
         Task<User> Updateuser(string Username, RegistrationDto loginReqdto);
         void DeleteUser(string userName);
-        //LoginResDto Refresh(LoginResDto token);
-        //LoginResDto Authenticate(string username, Claim[] claims);
-        //string GenerateToken(string username);
+        LoginResDto Refresh(LoginResDto token);
+        LoginResDto Authenticate(string username, Claim[] claims);
+        string GenerateToken(string username);
 
     }
 }

@@ -10,6 +10,7 @@ namespace webapi.Data.Entities
         }
         public DbSet<SuperVillain> SuperVillain { get; set; }
         
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; } 
+        public DbSet<RefreshtokenTable> RefreshtokenTables { get; set; }
     }
 }

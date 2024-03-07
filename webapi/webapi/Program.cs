@@ -36,6 +36,7 @@ namespace webapi
             builder.Services.AddScoped<IUserRepositry, UserRepositry>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(Program));
+            
             builder.Services.AddEndpointsApiExplorer(); 
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ReactJSDemoContext>(options =>

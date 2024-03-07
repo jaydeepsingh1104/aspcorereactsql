@@ -42,7 +42,7 @@ namespace WebAPICore.Controllers
         {
 
 
-            var registrationDto = mapper.Map<IEnumerable<RegistrationDto>>(  await uow.UserRepositry.GetAllAsyn());
+            var registrationDto = mapper.Map<IEnumerable<RegistrationDto>>(  await uow.UserRepositry.GetUserslist());
             return Ok(registrationDto);
         }
         [AllowAnonymous]
@@ -104,27 +104,26 @@ namespace WebAPICore.Controllers
             // _db.Remove(entity);
             // var user = ;
             // var registrationDto = mapper.Map<RegistrationDto>(user);
-            return Ok(mapper.Map<RegistrationDto>(await uow.UserRepositry.FindAsync(a=>a.Username==Username)));
+            return Ok(mapper.Map<RegistrationDto>(await uow.UserRepositry.FindUser(Username)));
         }
         [AllowAnonymous]
         [HttpPut("updateuser/{Username}")]
         public async Task<IActionResult> updateuser(string Username, RegistrationDto loginReqdto)
         {
+           // uow.UserRepositry.Updateuser(Username, loginReqdto);
+            if (Username != loginReqdto.Username)
+                return BadRequest("Update not allowed");
 
-          uow.UserRepositry.Updateuser( Username,  loginReqdto);
-            // if (Username != loginReqdto.Username)
-            //     return BadRequest("Update not allowed");
+            var userFromDb = await uow.UserRepositry.FindUser(Username);
 
-            // var userFromDb = await uow.UserRepositry.FindUser(Username);
+            if (userFromDb == null)
+            {
+                return BadRequest("Update not allowed");
+            }
+            userFromDb.role = loginReqdto.role;
+            userFromDb.isactive = loginReqdto.isactive;
 
-            // if (userFromDb == null)
-            // {
-            //     return BadRequest("Update not allowed");
-            // }
-            // userFromDb.role = loginReqdto.role;
-            // userFromDb.isactive = loginReqdto.isactive;
-
-             await uow.SaveAsync();
+            await uow.SaveAsync();
             return StatusCode(200);
         }
         // [HttpDelete("deleteuser/{Username}")]
@@ -134,18 +133,18 @@ namespace WebAPICore.Controllers
         //     await uow.SaveAsync();
         //     return Ok(Username);
         // }
-       
-        //[AllowAnonymous]
-        //[Route("Refresh")]
-        //[HttpPost]
-        //public async Task<IActionResult> Refresh(LoginResDto token)
-        //{
-        
-        //    return Ok( uow.UserRepositry.Refresh( token));
 
-        //}
+        [AllowAnonymous]
+        [Route("Refresh")]
+        [HttpPost]
+        public async Task<IActionResult> Refresh(LoginResDto token)
+        {
 
-    private string CreateJWT1(User user)
+            return Ok(uow.UserRepositry.Refresh(token));
+
+        }
+
+        private string CreateJWT1(User user)
         {
        return "dfd";
         }
