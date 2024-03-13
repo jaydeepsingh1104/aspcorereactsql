@@ -49,25 +49,8 @@ namespace WebAPICore.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginReqDto loginReq)
         {
-        //    var user = await uow.UserRepositry.login(loginReq.Username, loginReq.Password);
 
-        //     ApiError apiError = new ApiError();
-
-        //     if (user == null)
-        //     {
-        //         apiError.ErrorCode = Unauthorized().StatusCode;
-        //         apiError.ErrorMessage = "Invalid user name or password";
-        //         apiError.ErrorDetails = "This error appear when provided user id or password does not exists";
-        //         return Unauthorized(apiError);
-        //     }
- 
-        //     var loginRes = new LoginResDto(); 
-        //     // loginRes.UserName = user.Username;
-        //     // loginRes.isactive = user.isactive;
-        //     loginRes.Token = CreateJWT(user);
-        //     loginRes.RefreshToken = refreshToken.GenerateToken(loginReq.Username);
             var result=await uow.UserRepositry.login(loginReq.Username, loginReq.Password);
-            //  await uow.SaveAsync();
             return Ok(result);
 
         }
@@ -75,24 +58,7 @@ namespace WebAPICore.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegistrationDto loginReq)
         {
-            // ApiError apiError = new ApiError();
-
-            // if (loginReq.Username == null || loginReq.Password == null)
-            // {
-            //     apiError.ErrorCode = BadRequest().StatusCode;
-            //     apiError.ErrorMessage = "User name or password can not be blank";
-            //     return BadRequest(apiError);
-            // }
-
-            // if (await iuow.UserRepositry.UserAlreadyExists(loginReq.Username))
-            // {
-            //     apiError.ErrorCode = BadRequest().StatusCode;
-            //     apiError.ErrorMessage = "User already exists, please try different user name";
-            //     return BadRequest(apiError);
-            // }
-            //  var user = mapper.Map<User>(loginReq);
              uow.UserRepositry.Register(loginReq);
-          //  iuow.UserRepositry.Register(loginReq);
             await uow.SaveAsync();
             return StatusCode(201);
         }
@@ -100,10 +66,6 @@ namespace WebAPICore.Controllers
         [HttpGet("findUserbyuserName/{Username}")]
         public async Task<IActionResult> findUserByUsername(string Username)
         {
-            // var entity = await _db.FindAsync(id);
-            // _db.Remove(entity);
-            // var user = ;
-            // var registrationDto = mapper.Map<RegistrationDto>(user);
             return Ok(mapper.Map<RegistrationDto>(await uow.UserRepositry.FindUser(Username)));
         }
         [AllowAnonymous]
@@ -126,13 +88,13 @@ namespace WebAPICore.Controllers
             await uow.SaveAsync();
             return StatusCode(200);
         }
-        // [HttpDelete("deleteuser/{Username}")]
-        // public async Task<IActionResult> Delete(string Username)
-        // {
-        //     uow.UserRepositry.DeleteUser(Username);
-        //     await uow.SaveAsync();
-        //     return Ok(Username);
-        // }
+        [HttpDelete("deleteuser/{Username}")]
+        public async Task<IActionResult> Delete(string Username)
+        {
+            uow.UserRepositry.DeleteUser(Username);
+            await uow.SaveAsync();
+            return Ok(Username);
+        }
 
         [AllowAnonymous]
         [Route("Refresh")]

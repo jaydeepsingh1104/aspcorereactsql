@@ -29,18 +29,6 @@ namespace WebAPICore.Data.Repo
 
             if (!MatchPasswordHash(password, user.Password, user.PasswordKey))
                 return null;
-
-            //    // return user;
-            //      ApiError apiError = new ApiError();
-
-            //     if (user == null)
-            //     {
-            //         apiError.ErrorCode = Unauthorized().StatusCode;
-            //         apiError.ErrorMessage = "Invalid user name or password";
-            //         apiError.ErrorDetails = "This error appear when provided user id or password does not exists";
-            //         return Unauthorized(apiError);
-            //     }
-
             var loginRes = new LoginResDto();
          
             loginRes.Token = CreateJWT(user);
@@ -115,17 +103,8 @@ namespace WebAPICore.Data.Repo
 
        
             var userFromDb = await context.Users.Where(p => p.Username == Username).FirstOrDefaultAsync();
-
-            //     if (userFromDb == null)
-            //     {
-            //  //       return "Update not allowed";
-            //     }
             userFromDb.role = loginReqdto.role;
             userFromDb.isactive = loginReqdto.isactive;
-            // object value = mapper.Map<RegistrationDto>(await FindAsync(a=>a.Username==Username);
-            // await SaveAsync();
-            // StatusCode(200);
-            // await SaveAsync();
               context.Users.Update(userFromDb);
 
              return await context.Users.FirstOrDefaultAsync(x => x.Username == Username);

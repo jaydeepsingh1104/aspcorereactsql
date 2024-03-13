@@ -13,14 +13,12 @@ namespace webapi
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost",
-                "http://localhost:3000/",
+                        builder.WithOrigins("http://localhost:3000",
                 "https://localhost:7230",
                 "http://localhost:90")
             .AllowAnyMethod()
